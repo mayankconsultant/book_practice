@@ -1,16 +1,33 @@
 from django.contrib import admin
 
-from .models import Post
+from .models import Post, comment, Team, TeamMember
 # Register your models here.
 
 # admin.site.register(Post)
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('title', 'slug', 'author', 'publish', 'status')
+    list_display = ('id','title', 'slug', 'author', 'publish', 'status')
     list_filter = ('status', 'created', 'publish', 'author')
     search_fields = ('title', 'body')
     prepopulated_fields = {'slug': ('title',)}
     raw_id_fields = ('author',)
     date_hierarchy = 'publish'
     ordering = ('status', 'publish')
+
+# admin.site.register(comment)
+
+@admin.register(comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('name','email','post','created','active')
+    list_filter = ('post','created','updated')
+    search_fields = ('name','email','body',)
+
+@admin.register(TeamMember)
+class TeamMemberAdmin(admin.ModelAdmin):
+    list_display = ('member_name','team','is_active')
+    # list_filter = ('post','created','updated')
+    # search_fields = ('name','email','body',)
+    # pass
+
+admin.site.register(Team)
